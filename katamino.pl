@@ -6,7 +6,6 @@ sublista(Descartar, Tomar, Lista, Res) :-
     length(Res, Tomar), 
     append(Res, Descarte2, Resto).
 
-<<<<<<< HEAD
 % Completar ...
 luca(X) :-  jero(X).
 =======
@@ -28,4 +27,3 @@ coordenadas(Matriz, (Fil,Col)) :-
     tamanio(Matriz,CantFila,CantCol), 
     between(1, CantFila, Fil), 
     between(1, CantCol, Col).
->>>>>>> 103b5bde7f604e02aa14f5065206b75289b4c8f7
