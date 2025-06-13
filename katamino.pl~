@@ -1,4 +1,3 @@
 :- use_module(piezas).
 
 % Completar ...
-luca(X) :-  jero(X).
