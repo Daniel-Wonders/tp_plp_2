@@ -24,3 +24,4 @@ coordenadas(Matriz, (Fil,Col)) :-
     tamanio(Matriz,CantFila,CantCol), 
     between(1, CantFila, Fil), 
     between(1, CantCol, Col).
+          
