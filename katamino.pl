@@ -6,6 +6,9 @@ sublista(Descartar, Tomar, Lista, Res) :-
     length(Res, Tomar), 
     append(Res, Descarte2, Resto).
 
+% Completar ...
+luca(X) :-  jero(X).
+=======
 
 %length_aux(?K,?L).
     length_aux(K,L) :- length(L,K).
