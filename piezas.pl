@@ -123,7 +123,7 @@ strMAux([MH|MT], S) :-
 	strL(MH, S1),
 	strMAux(MT, S2),
 	string_concat(S1, S2, S).
-
+  
 strL(L, S) :-
 	strLAux(L, S1),
 	string_concat('║', S1, S).
