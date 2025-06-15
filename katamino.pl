@@ -48,16 +48,41 @@ k-piezas(K, Res) :-
      member(Res, ListaFiltrada).
 
 %!seccionTablero(+T,+ALTO, +ANCHO, +IJ, ?ST)
-
-seccionTablero(Tablero, 0, Ancho, CoordenadaInicial, []). %Caso Base
-
+seccionTablero(_, 0, _, _, []).
 seccionTablero(Tablero, Alto, Ancho, (I,J), [X|XS]) :- 
-    nth1(I, Tablero, Fila), %Instancio Fila con una fila de Tablero, para calcular el ancho de la matriz.
-    length(Fila, Anchotablero), Descartar is Anchotablero - Ancho, %Instaciamos lo que vamos a descartar en la fila
-    sublista(Descartar, Ancho, Fila, X), %Instanciamos X como la seccion de la matriz que queremos buscar
-    I2 is I+1, %Avanzamos a la siguiente fila
-    Alto2 is Alto-1, %Resto al alto para hacer recursion
-    seccionTablero(Tablero, Alto2, Ancho, (I2,J), XS). %Recursion
+    length(Tablero, Altotablero),
+    nth1(I, Tablero, Fila),
+    length(Fila, Anchotablero),
+    
+    LimiteLateral is Anchotablero - Ancho, 
+    LimiteVertical is Altotablero - Alto + 1, 
 
-    tablero(3, T), pieza(e, E), tama~no(E, F, C), seccionTablero(T, F, C, (1,1), E), mostrar(T).
+    between(0,LimiteLateral,J),
+    between(0,LimiteVertical,I),
 
+    sublista(J, Ancho, Fila, X), 
+    I2 is I+1, 
+    Alto2 is Alto-1,
+    seccionTablero(Tablero, Alto2, Ancho, (I2,J), XS).
+
+
+
+
+%ubicarPieza(+Tablero, +Identificador).
+ubicarPieza(Tablero, Identificador) :- pieza(Identificador, ID), tamanio(ID, Fila, Colum), seccionTablero(Tablero, Fila, Colum, IJ, ID).
+
+%poda(+Poda, +Tablero)
+poda(sinPoda, _). 
+
+
+%ubicarPiezas(+Tablero, +Poda, +Identificadores)
+ubicarPiezas(_, _, []). 
+ubicarPiezas(Tablero, Poda, Identificadores) :- 
+    maplist(ubicarPieza(Tablero), Identificadores), 
+    poda(Poda, Tablero).
+
+%llenarTablero(+Poda, +Columnas,-Tablero)
+llenarTablero(Poda, Columnas, Tablero) :- 
+    tablero(Columnas, Tablero), 
+    k-piezas(Columnas, IDList), 
+    ubicarPiezas(Tablero, Poda, IDList).
