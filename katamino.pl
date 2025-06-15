@@ -1,5 +1,5 @@
 :- use_module(piezas).
-%sublista(+Descartar, +Tomar, +L, -R)
+%!sublista(+Descartar, +Tomar, +L, -R)
 sublista(Descartar, Tomar, Lista, Res) :- 
     length(Descarte1, Descartar), 
     append(Descarte1, Resto, Lista), 
@@ -10,28 +10,28 @@ sublista(Descartar, Tomar, Lista, Res) :-
 %luca(X) :-  jero(X).
 %=======
 
-%length_aux(?K,?L).
+%!length_aux(?K,?L).
     length_aux(K,L) :- length(L,K).
 
-%tablero(+K,-T)
+%!tablero(+K,-T)
     tablero(K,T) :- length(T,5), maplist(length_aux(K),T).
 
-%tamanio(+M,-F,-C)
+%!tamanio(+M,-F,-C)
 tamanio(Matriz, CantFilas, CantColumnas) :- 
     last(Matriz, UltimaFila),           % Instanciamos una fila de la matriz
     length(Matriz, CantFilas),          % Sacamos la longitud de la matriz (Cant Filas)
     length(UltimaFila, CantColumnas).   % Sacamos la longitud de la fila (Cant Columnas)
 
-%coordenadas(+T,-IJ)
+%!coordenadas(+T,-IJ)
 coordenadas(Matriz, (Fil,Col)) :- 
     tamanio(Matriz,CantFila,CantCol), 
     between(1, CantFila, Fil), 
     between(1, CantCol, Col).
           
-%memberAux(+P, ?Pieza)
+%!memberAux(+P, ?Pieza)
 memberAux(P, Pieza) :- member(Pieza, P).
 
-%estaOrdenado(?Lista, ?Res).
+%!estaOrdenado(?Lista, ?Res).
 estaOrdenado(_,[]).
 estaOrdenado([X|PS],[X|XS]) :- estaOrdenado(PS,XS).
 estaOrdenado([_|PS],XS) :- estaOrdenado(PS,XS).
@@ -68,21 +68,53 @@ seccionTablero(Tablero, Alto, Ancho, (I,J), [X|XS]) :-
 
 
 
-%ubicarPieza(+Tablero, +Identificador).
+%!ubicarPieza(+Tablero, +Identificador).
 ubicarPieza(Tablero, Identificador) :- pieza(Identificador, ID), tamanio(ID, Fila, Colum), seccionTablero(Tablero, Fila, Colum, IJ, ID).
 
-%poda(+Poda, +Tablero)
+%!poda(+Poda, +Tablero)
 poda(sinPoda, _). 
+%poda(podaMod5, T) :- todosGruposLibresModulo5(T).
 
 
-%ubicarPiezas(+Tablero, +Poda, +Identificadores)
+
+%!ubicarPiezas(+Tablero, +Poda, +Identificadores)
 ubicarPiezas(_, _, []). 
 ubicarPiezas(Tablero, Poda, Identificadores) :- 
     maplist(ubicarPieza(Tablero), Identificadores), 
     poda(Poda, Tablero).
 
-%llenarTablero(+Poda, +Columnas,-Tablero)
+%!llenarTablero(+Poda, +Columnas,-Tablero)
 llenarTablero(Poda, Columnas, Tablero) :- 
     tablero(Columnas, Tablero), 
     k-piezas(Columnas, IDList), 
     ubicarPiezas(Tablero, Poda, IDList).
+
+
+
+% 10: 
+cantSoluciones(Poda, Columnas, N) :-
+findall(T, llenarTablero(Poda, Columnas, T), TS),
+length(TS, N).
+
+% time(cantSoluciones(sinPoda, 3, N)). -> 8,926,330 inferences, 0.453 CPU in 0.456 seconds (99% CPU, 19699487 Lips), N = 28.
+% time(cantSoluciones(sinPoda, 4, N)). -> 341,141,427 inferences, 17.516 CPU in 17.557 seconds (100% CPU, 19476406 Lips), N = 200.
+
+%11:
+
+%!todosGruposLibresModulo5(+T)
+%todosGruposLibresModulo5(Tablero)
+
+%estaLibre(+Tan, +Cords, -Res)
+estaLibre(Tab, (I,J), true):-
+    nth1(I,Tab,Fila),
+    nth1(J,Fila,Elem),
+    var(Elem).
+estaLibre(Tab, (I,J), false):-
+    nth1(I,Tab,Fila),
+    nth1(J,Fila,Elem),
+    nonvar(Elem).
+
+
+%!agrupar(+L,-G)
+agrupar(Lista, (I,J)):- 
+    
