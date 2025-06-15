@@ -102,7 +102,11 @@ length(TS, N).
 %11:
 
 %!todosGruposLibresModulo5(+T)
-%todosGruposLibresModulo5(Tablero)
+todosGruposLibresModulo5(Tablero):-
+    maplist(estaLibre, Tablero),
+    member(Grupo,agrupar(Tablero)),
+    length(Grupo, X2),
+    X2 is mod(X,5)=:=0.
 
 %estaLibre(+Tan, +Cords, -Res)
 estaLibre(Tab, (I,J), true):-
@@ -116,5 +120,5 @@ estaLibre(Tab, (I,J), false):-
 
 
 %!agrupar(+L,-G)
-agrupar(Lista, (I,J)):- 
+agrupar(Lista, Res).
     
