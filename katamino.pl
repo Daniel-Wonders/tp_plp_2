@@ -1,14 +1,10 @@
 :- use_module(piezas).
 %!sublista(+Descartar, +Tomar, +L, -R)
 sublista(Descartar, Tomar, Lista, Res) :- 
+    append(Descarte1, Resto, Lista),
     length(Descarte1, Descartar), 
-    append(Descarte1, Resto, Lista), 
-    length(Res, Tomar), 
-    append(Res, Descarte2, Resto). %<------
-
-% Completar ...
-%luca(X) :-  jero(X).
-%=======
+    append(Res, Descarte2, Resto),
+    length(Res, Tomar).
 
 %!length_aux(?K,?L).
     length_aux(K,L) :- length(L,K).
@@ -48,23 +44,35 @@ k-piezas(K, Res) :-
      member(Res, ListaFiltrada).
 
 %!seccionTablero(+T,+ALTO, +ANCHO, +IJ, ?ST)
-seccionTablero(_, 0, _, _, []).
-seccionTablero(Tablero, Alto, Ancho, (I,J), [X|XS]) :- 
-    length(Tablero, Altotablero),
+seccionTablero(_, 0, _, _, []). %Caso Base
+
+%seccionTablero(Tablero, Alto, Ancho, (I,J), [X|XS]) :- 
+%    nth1(I, Tablero, Fila), %Instancio Fila con una fila de Tablero, para calcular el ancho de la matriz.
+%    length(Fila, Anchotablero), Descartar is Anchotablero - Ancho, %Instaciamos lo que vamos a descartar en la fila
+%    sublista(Descartar, Ancho, Fila, X), %Instanciamos X como la seccion de la matriz que queremos buscar
+%    I2 is I+1, %Avanzamos a la siguiente fila
+%    Alto2 is Alto-1, %Resto al alto para hacer recursion
+%    seccionTablero(Tablero, Alto2, Ancho, (I2,J), XS). %Recursion
+
+seccionTablero(Tablero, Alto, Ancho, (I,J), XS) :-
+    length(Tablero, AltoTablero),
     nth1(I, Tablero, Fila),
-    length(Fila, Anchotablero),
+    length(Fila, AnchoTablero),
+    NewJ is AnchoTablero - Ancho,
+    NewI is AltoTablero - Alto, %NewI y NewJ es la cantidad que queremos eliminar.
     
-    LimiteLateral is Anchotablero - Ancho, 
-    LimiteVertical is Altotablero - Alto + 1, 
+    length(ListaRes, AltoTablero),
+    NewAlto is AltoTablero - NewI,
+    length(XS,NewAlto).
+    
+   % maplist(su),
+      
+    
+    
 
-    between(0,LimiteLateral,J),
-    between(0,LimiteVertical,I),
-
-    sublista(J, Ancho, Fila, X), 
-    I2 is I+1, 
-    Alto2 is Alto-1,
-    seccionTablero(Tablero, Alto2, Ancho, (I2,J), XS).
-
+%    (T_T)
+%     /|\
+%     / \
 
 
 
@@ -99,26 +107,15 @@ length(TS, N).
 % time(cantSoluciones(sinPoda, 3, N)). -> 8,926,330 inferences, 0.453 CPU in 0.456 seconds (99% CPU, 19699487 Lips), N = 28.
 % time(cantSoluciones(sinPoda, 4, N)). -> 341,141,427 inferences, 17.516 CPU in 17.557 seconds (100% CPU, 19476406 Lips), N = 200.
 
-%11:
-
-%!todosGruposLibresModulo5(+T)
 todosGruposLibresModulo5(Tablero):-
-    maplist(estaLibre, Tablero),
-    member(Grupo,agrupar(Tablero)),
-    length(Grupo, X2),
-    X2 is mod(X,5)=:=0.
+    findall(IJ, (coordenadas(Tablero,IJ), estaLibre(Tablero, IJ)), CoordenadasLibres),
+    agrupar(CoordenadasLibres, GrupoDeLibres),
+    member(Grupo,GrupoDeLibres), 
+    length(Grupo, X), 
+    mod(X, 5) =:= 0.
 
-%estaLibre(+Tan, +Cords, -Res)
-estaLibre(Tab, (I,J), true):-
+%estaLibre(+Tab,?Res,?Cords)
+estaLibre(Tab, (I,J)):-
     nth1(I,Tab,Fila),
     nth1(J,Fila,Elem),
     var(Elem).
-estaLibre(Tab, (I,J), false):-
-    nth1(I,Tab,Fila),
-    nth1(J,Fila,Elem),
-    nonvar(Elem).
-
-
-%!agrupar(+L,-G)
-agrupar(Lista, Res).
-    
