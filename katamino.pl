@@ -1,5 +1,6 @@
 :- use_module(piezas).
 %!sublista(+Descartar, +Tomar, +L, -R)
+%Es reversible
 sublista(Descartar, Tomar, Lista, Res) :- 
     append(Descarte1, Resto, Lista),
     length(Descarte1, Descartar), 
@@ -55,25 +56,14 @@ seccionTablero(_, 0, _, _, []). %Caso Base
 %    seccionTablero(Tablero, Alto2, Ancho, (I2,J), XS). %Recursion
 
 seccionTablero(Tablero, Alto, Ancho, (I,J), XS) :-
-    length(Tablero, AltoTablero),
-    nth1(I, Tablero, Fila),
-    length(Fila, AnchoTablero),
-    NewJ is AnchoTablero - Ancho,
-    NewI is AltoTablero - Alto, %NewI y NewJ es la cantidad que queremos eliminar.
+    tablero(Ancho, XS2),
+    tamanio(Tablero, AltoTotal, AnchoTotal),
+    DescarteAncho is AnchoTotal - Ancho,
+    maplist(sublista(DescarteAncho, Ancho), Tablero, XS2),
+    DescarteAlto is AltoTotal - Alto,
+    sublista(DescarteAlto,Alto,XS2,XS).
     
-    length(ListaRes, AltoTablero),
-    NewAlto is AltoTablero - NewI,
-    length(XS,NewAlto).
-    
-   % maplist(su),
-      
-    
-    
-
-%    (T_T)
-%     /|\
-%     / \
-
+%No llegamos con el tiempo, porque pensamos que se entregaba el viernes 20/06 a las 3:59. 
 
 
 %!ubicarPieza(+Tablero, +Identificador).
@@ -119,3 +109,4 @@ estaLibre(Tab, (I,J)):-
     nth1(I,Tab,Fila),
     nth1(J,Fila,Elem),
     var(Elem).
+
