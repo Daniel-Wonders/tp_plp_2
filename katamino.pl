@@ -79,16 +79,15 @@ cantSoluciones(Poda, Columnas, N) :-
 findall(T, llenarTablero(Poda, Columnas, T), TS),
 length(TS, N).
 
-% time(cantSoluciones(sinPoda, 3, N)). 54,978,023 inferences, 3.734 CPU in 3.747 seconds (100% CPU, 14722148 Lips) N = 28.
-% time(cantSoluciones(sinPoda, 4, N)). 2,997,509,413 inferences, 178.625 CPU in 179.485 seconds (100% CPU, 16781018 Lips) N = 200.
+% time(cantSoluciones(sinPoda, 3, N)). 54,978,023 inferences, 3.734 CPU in 3.747 seconds (100% CPU, 14722148 Lips) --> N = 28.
+% time(cantSoluciones(sinPoda, 4, N)). 2,997,509,413 inferences, 178.625 CPU in 179.485 seconds (100% CPU, 16781018 Lips) --> N = 200.
 
 %11
-todosGruposLibresModulo5(Tablero):-
-    findall(IJ, (coordenadas(Tablero,IJ), estaLibre(Tablero, IJ)), CoordenadasLibres),
-    agrupar(CoordenadasLibres, GrupoDeLibres),
-    member(Grupo,GrupoDeLibres), 
-    length(Grupo, X), 
-    mod(X, 5) =:= 0.
+todosGruposLibresModulo5(Tablero) :-
+    findall((I,J), (coordenadas(Tablero,(I,J)), estaLibre(Tablero,(I,J))), CoordenadasLibres),
+    agrupar(CoordenadasLibres, GruposDeLibres),
+    forall(member(Grupo, GruposDeLibres), (length(Grupo, Len), 0 is Len mod 5)).
+
 
 %estaLibre(+Tab,?Res,?Cords)
 estaLibre(Tab, (I,J)):-
@@ -96,3 +95,5 @@ estaLibre(Tab, (I,J)):-
     nth1(J,Fila,Elem),
     var(Elem).
 
+% time(cantSoluciones(podaMod5, 3, N)). 54,982,053 inferences, 3.842 CPU in 3.842 seconds (100% CPU, 14310473 Lips) --> N = 28.
+% time(cantSoluciones(podaMod5, 4, N)). 2,997,475,470 inferences, 211.116 CPU in 211.133 seconds (100% CPU, 14198264 Lips) --> N = 200.
