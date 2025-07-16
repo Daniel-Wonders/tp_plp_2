@@ -33,9 +33,9 @@ estaOrdenado([X|PS],[X|XS]) :- estaOrdenado(PS,XS).
 estaOrdenado([_|PS],XS) :- estaOrdenado(PS,XS).
 
 kPiezas(K, Res) :- 
-    nombrePiezas(Piezas),
-     setof(SolucionFiltrada, (estaOrdenado(Piezas, SolucionFiltrada), length(SolucionFiltrada, K)), ListaFiltrada), 
-     member(Res, ListaFiltrada).
+    nombrePiezas(Piezas), %DUDA, podemos cambiarle el nonmbre a estaOrdenado a "sublistasOrdenadas"? No hace lo mismo sort/2 que nuestro auxiliar 
+    setof(SolucionFiltrada, (estaOrdenado(Piezas, SolucionFiltrada), length(SolucionFiltrada, K)), ListaFiltrada), 
+    member(Res, ListaFiltrada).
 
 %!seccionTablero(+T,+ALTO, +ANCHO, +IJ, ?ST)
 seccionTablero(Tablero, Alto, Ancho, (I,J), XS) :-
@@ -79,7 +79,7 @@ cantSoluciones(Poda, Columnas, N) :-
 findall(T, llenarTablero(Poda, Columnas, T), TS),
 length(TS, N).
 
-% time(cantSoluciones(sinPoda, 3, N)). -> 8,926,330 inferences, 0.453 CPU in 0.456 seconds (99% CPU, 19699487 Lips), N = 28.
+% time(cantSoluciones(sinPoda, 3, N)). 54,978,023 inferences, 3.734 CPU in 3.747 seconds (100% CPU, 14722148 Lips) N = 28.
 % time(cantSoluciones(sinPoda, 4, N)). -> 341,141,427 inferences, 17.516 CPU in 17.557 seconds (100% CPU, 19476406 Lips), N = 200.
 
 todosGruposLibresModulo5(Tablero):-
