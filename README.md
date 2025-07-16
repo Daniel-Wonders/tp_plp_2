@@ -11,6 +11,6 @@ Correcciones:
 12- EJERCICIO 7: El predicado no tiene el comportamiento esperado. Por ejemplo, faltan rotaciones de una misma pieza. CORREGIDOOOO 
 13- EJERCICIO 8: El predicado no tiene el comportamiento esperado. Depende del ejercicio anterior. CORREGIDOOOO 
 14- EJERCICIO 9: El predicado no tiene el comportamiento esperado. Depende del ejercicio anterior. CORREGIDOOOO 
-15- EJERCICIO 10: Dado que los ejercicios previos no están resueltos adecuadamente, se requiere volver a computar las métricas para la re-entrega.
+15- EJERCICIO 10: Dado que los ejercicios previos no están resueltos adecuadamente, se requiere volver a computar las métricas para la re-entrega. CORREGIDOOOO
 6- FALTAN EJERCICIOS 11 Y 12   (TO DO)
 10- EJERCICIO 5: VER QUE HACER CON ESTAORDENADO, HABRIA QUE CONSULTAR SI CON CAMBIARLE EL NOMBRE BASTA (TO DO)

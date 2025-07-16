@@ -56,7 +56,7 @@ ubicarPieza(Tablero, Identificador) :-
 
 %!poda(+Poda, +Tablero)
 poda(sinPoda, _). 
-%poda(podaMod5, T) :- todosGruposLibresModulo5(T).
+poda(podaMod5, T) :- todosGruposLibresModulo5(T).
 
 
 
@@ -80,8 +80,9 @@ findall(T, llenarTablero(Poda, Columnas, T), TS),
 length(TS, N).
 
 % time(cantSoluciones(sinPoda, 3, N)). 54,978,023 inferences, 3.734 CPU in 3.747 seconds (100% CPU, 14722148 Lips) N = 28.
-% time(cantSoluciones(sinPoda, 4, N)). -> 341,141,427 inferences, 17.516 CPU in 17.557 seconds (100% CPU, 19476406 Lips), N = 200.
+% time(cantSoluciones(sinPoda, 4, N)). 2,997,509,413 inferences, 178.625 CPU in 179.485 seconds (100% CPU, 16781018 Lips) N = 200.
 
+%11
 todosGruposLibresModulo5(Tablero):-
     findall(IJ, (coordenadas(Tablero,IJ), estaLibre(Tablero, IJ)), CoordenadasLibres),
     agrupar(CoordenadasLibres, GrupoDeLibres),
