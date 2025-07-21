@@ -28,13 +28,14 @@ coordenadas(Matriz, (Fil,Col)) :-
     between(1, CantCol, Col).
           
 %!estaOrdenado(?Lista, ?Res).
-estaOrdenado(_,[]).
-estaOrdenado([X|PS],[X|XS]) :- estaOrdenado(PS,XS).
-estaOrdenado([_|PS],XS) :- estaOrdenado(PS,XS).
+sublistasOrdenadas(_,[]).
+sublistasOrdenadas([X|PS],[X|XS]) :- sublistasOrdenadas(PS,XS).
+sublistasOrdenadas([_|PS],XS) :- sublistasOrdenadas(PS,XS).
 
+%!kPiezas(+K, -PS)
 kPiezas(K, Res) :- 
-    nombrePiezas(Piezas), %DUDA, podemos cambiarle el nonmbre a estaOrdenado a "sublistasOrdenadas"? No hace lo mismo sort/2 que nuestro auxiliar 
-    setof(SolucionFiltrada, (estaOrdenado(Piezas, SolucionFiltrada), length(SolucionFiltrada, K)), ListaFiltrada), 
+    nombrePiezas(Piezas), 
+    setof(SolucionFiltrada, (sublistasOrdenadas(Piezas, SolucionFiltrada), length(SolucionFiltrada, K)), ListaFiltrada), 
     member(Res, ListaFiltrada).
 
 %!seccionTablero(+T,+ALTO, +ANCHO, +IJ, ?ST)
@@ -97,3 +98,20 @@ estaLibre(Tab, (I,J)):-
 
 % time(cantSoluciones(podaMod5, 3, N)). 54,982,053 inferences, 3.842 CPU in 3.842 seconds (100% CPU, 14310473 Lips) --> N = 28.
 % time(cantSoluciones(podaMod5, 4, N)). 2,997,475,470 inferences, 211.116 CPU in 211.133 seconds (100% CPU, 14198264 Lips) --> N = 200.
+
+/*
+Predicado original:
+sublista(+Descartar, +Tomar, +Lista, -Res) :- 
+    append(Descarte1, Resto, Lista),
+    length(Descarte1, Descartar), 
+    append(Res, _, Resto),
+    length(Res, Tomar).
+    
+QVQ: (-Descartar, +Tomar, +L, +R).
+Para ver estaticamente si el predicado es reversible con el patron de instanciacion
+(-Descartar, +Tomar, +Lista, +Res) tenemos que ver la reversibilidad de los predicados internos.
+    append(-Descarte1, -Resto, +Lista), <- Esto es posible, va a instanciar en Decarte1 y Resto las posibles particiones de Lista
+    length(+Descarte1, -Descartar), <- Esto es posible, va a generar el largo de una de las particiones en Descartar
+    append(+Res, _, +Resto), <- Esto tambien es valido
+    length(+Res, +Tomar). <- Tambien valido, pido que el largo de Res se Tomar
+*/
