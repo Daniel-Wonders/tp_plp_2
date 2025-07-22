@@ -32,6 +32,10 @@ estaOrdenado(_,[]).
 estaOrdenado([X|PS],[X|XS]) :- estaOrdenado(PS,XS).
 estaOrdenado([_|PS],XS) :- estaOrdenado(PS,XS).
 
+sublistaPrueba(Sub, Lista):- 
+    append(_, Rest, Lista), 
+    append(Sub, _, Rest). 
+
 kPiezas(K, Res) :- 
     nombrePiezas(Piezas), %DUDA, podemos cambiarle el nonmbre a estaOrdenado a "sublistasOrdenadas"? No hace lo mismo sort/2 que nuestro auxiliar 
     setof(SolucionFiltrada, (estaOrdenado(Piezas, SolucionFiltrada), length(SolucionFiltrada, K)), ListaFiltrada), 
