@@ -27,18 +27,15 @@ coordenadas(Matriz, (Fil,Col)) :-
     between(1, CantFila, Fil), 
     between(1, CantCol, Col).
           
-%!estaOrdenado(?Lista, ?Res).
-estaOrdenado(_,[]).
-estaOrdenado([X|PS],[X|XS]) :- estaOrdenado(PS,XS).
-estaOrdenado([_|PS],XS) :- estaOrdenado(PS,XS).
+%!subsecuenciasOrdenadas(+Lista, ?Res).
+subsecuenciasOrdenadas(_,[]).
+subsecuenciasOrdenadas([X|PS],[X|XS]) :- subsecuenciasOrdenadas(PS,XS).
+subsecuenciasOrdenadas([_|PS],XS) :- subsecuenciasOrdenadas(PS,XS).
 
-sublistaPrueba(Sub, Lista):- 
-    append(_, Rest, Lista), 
-    append(Sub, _, Rest). 
-
+%!kPiezas(+K, -PS)
 kPiezas(K, Res) :- 
-    nombrePiezas(Piezas), %DUDA, podemos cambiarle el nonmbre a estaOrdenado a "sublistasOrdenadas"? No hace lo mismo sort/2 que nuestro auxiliar 
-    setof(SolucionFiltrada, (estaOrdenado(Piezas, SolucionFiltrada), length(SolucionFiltrada, K)), ListaFiltrada), 
+    nombrePiezas(Piezas), 
+    setof(SolucionFiltrada, (subsecuenciasOrdenadas(Piezas, SolucionFiltrada), length(SolucionFiltrada, K)), ListaFiltrada), 
     member(Res, ListaFiltrada).
 
 %!seccionTablero(+T,+ALTO, +ANCHO, +IJ, ?ST)
@@ -101,3 +98,20 @@ estaLibre(Tab, (I,J)):-
 
 % time(cantSoluciones(podaMod5, 3, N)). 54,982,053 inferences, 3.842 CPU in 3.842 seconds (100% CPU, 14310473 Lips) --> N = 28.
 % time(cantSoluciones(podaMod5, 4, N)). 2,997,475,470 inferences, 211.116 CPU in 211.133 seconds (100% CPU, 14198264 Lips) --> N = 200.
+
+/*
+Predicado original:
+sublista(+Descartar, +Tomar, +Lista, -Res) :- 
+    append(Descarte1, Resto, Lista),
+    length(Descarte1, Descartar), 
+    append(Res, _, Resto),
+    length(Res, Tomar).
+    
+QVQ: (-Descartar, +Tomar, +Lista, +Res).
+Para ver estaticamente si el predicado es reversible con el patron de instanciacion
+(-Descartar, +Tomar, +Lista, +Res) tenemos que ver la reversibilidad de los predicados internos.
+    append(-Descarte1, -Resto, +Lista), <- Esto es posible, va a instanciar en Descarte1 y Resto las posibles particiones de Lista
+    length(+Descarte1, -Descartar), <- Esto es posible, va a generar el largo de una de las particiones en Descartar
+    append(+Res, _, +Resto), <- Esto tambien es valido
+    length(+Res, +Tomar). <- Tambien valido, pido que el largo de Res se Tomar
+*/
